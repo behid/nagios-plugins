@@ -20,10 +20,8 @@ def get_backend_health(statistics_rows):
         if row['svname'] != 'BACKEND' and row['svname']!= 'localhost' and row['svname'] != 'FRONTEND':
 
                 if row.get('check_status') == "L7OK" and (row.get('check_code') == "200" or row.get('check_code') == "301"):
-                    #print "Server: " + row.get('svname') + " OK, returned status code: " + row.get('check_code')
                     backend_ok.append(row.get('svname'))
                 else:
-                    #print "Server: " + row.get('svname') + " NOT OK, returned status code: " + row.get('check_code')
                     backend_not_ok.append(row.get('svname'))
         
     if len(backend_not_ok) != 0:
