@@ -18,11 +18,12 @@ def get_backend_health(statistics_rows):
     
     for row in statistics_rows:
         if row['svname'] != 'BACKEND' and row['svname']!= 'localhost' and row['svname'] != 'FRONTEND':
-
-                if row.get('check_status') == "L7OK" and (row.get('check_code') == "200" or row.get('check_code') == "301"):
-                    backend_ok.append(row.get('svname'))
-                else:
-                    backend_not_ok.append(row.get('svname'))
+            if row.get('check_status') == 'L4OK':
+                backend_ok.append(row.get('svname'))
+            elif row.get('check_status') == 'L7OK' and row.get('check_code') in ["200", "301", "302"]:
+                backend_ok.append(row.get('svname'))
+            else:
+                backend_not_ok.append(row.get('svname'))
         
     if len(backend_not_ok) != 0:
         print "Backends not ok: [%s]" % ', '.join(map(str, backend_not_ok))
