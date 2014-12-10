@@ -19,7 +19,8 @@ def get_backend_health(statistics_rows):
     for row in statistics_rows:
         if row['svname'] != 'BACKEND' and row['svname']!= 'localhost' and row['svname'] != 'FRONTEND':
 
-                if row.get('check_status') == "L7OK" and (row.get('check_code') == "200" or row.get('check_code') == "301"):
+                # ToDo: Check which codes we should consider OK
+                if row.get('check_status') == "L7OK" and (row.get('check_code') == "200" or row.get('check_code') == "301" or row.get('check_code') == "302"):
                     backend_ok.append(row.get('svname'))
                 else:
                     backend_not_ok.append(row.get('svname'))
@@ -28,10 +29,9 @@ def get_backend_health(statistics_rows):
         print "Backends not ok: [%s]" % ', '.join(map(str, backend_not_ok))
         exit_code = 2
     else:
-        print "All backends OK! [%s]" % ', '.join(map(str, backend_ok))
+        print "All backends OK!"
         exit_code = 0
-            
-            
+             
     return exit_code
 
 output = get_haproxy_statistics(config.haproxy_url, config.auth_user, config.auth_password)
