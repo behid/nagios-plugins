@@ -13,7 +13,7 @@ def check_haproxy_backend_health(statistics_rows):
         if row['svname'] != 'BACKEND' and row['svname'] != 'localhost' and row['svname'] != 'FRONTEND':
             if row.get('check_status') == 'L4OK':
                 backend_ok.append(row.get('svname'))
-            elif row.get('check_status') == 'L7OK' and row.get('check_code') in ["200", "301", "302"]:
+            elif (row.get('check_status') == 'L7OK' or row.get('check_status') == '* L7OK') and row.get('check_code') in ["200", "301", "302"]:
                 backend_ok.append(row.get('svname'))
             else:
                 backend_not_ok.append(row.get('svname'))
